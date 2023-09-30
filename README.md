@@ -10,7 +10,6 @@ pip install requests
 ```
 python ip-scanner.py
 ```
-### The input file is named `ip.txt` containing one IP address for each line.
+### The input file is named `ip.txt` and contains one IP address for each line.
 
 
-## Live: https://replit.com/@hawshemi/ip-scanner
