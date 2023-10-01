@@ -1,5 +1,6 @@
 import re
 from collections import Counter
+import ipaddress
 
 # Function to validate an IP address
 def is_valid_ip(ip):
@@ -14,12 +15,22 @@ def is_valid_ip(ip):
     except ValueError:
         return False
 
-# Function to filter out local IP addresses
+# Function to check if an IP address is local
 def is_local_ip(ip):
-    return ip.startswith("10.") or ip.startswith("192.168.") or ip == "127.0.0.1"
+    try:
+        ip_obj = ipaddress.IPv4Address(ip)
+        local_ip_ranges = [
+            ipaddress.IPv4Network('10.0.0.0/8'),
+            ipaddress.IPv4Network('172.16.0.0/12'),
+            ipaddress.IPv4Network('192.168.0.0/16'),
+            ipaddress.IPv4Network('100.64.0.0/10')
+        ]
+        return any(ip_obj in local_range for local_range in local_ip_ranges)
+    except ipaddress.AddressValueError:
+        return False
 
 # Read IP addresses from the input file
-with open("ip.txt", "r") as f:
+with open("input.txt", "r") as f:
     ip_addresses = f.read().splitlines()
 
 # Validate and filter IP addresses
